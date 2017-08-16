@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-inverse bg-inverse">
+
+    <a class="navbar-brand" href="#">Welcome, {{ user }}!</a>
+ 
+</nav>
+
+
+<div class="jumbotron text-center">
+  <h1 class="text-success">Spotify NUI</h1>
+  <p>Allows for Spotify user experience to be controlled naturally through common hand gestures. This is the server that <br/> bridges the connection to the Spotify API using OAuth 2.0 Verification.</p> 
+</div>
+  
+<div class="container">
+  <div class="span12">
+     <div class="text-center feature-block">
+
+      <h3 class="text-center">Token Generation</h3>
+      <p>A token is needed to use of the Spotify API. <br/> The Flask server will save the token within a text file. <br/> After an hour, the token will expire. Use the button below  <br/> to generate another one as needed.</p>
+      	<button type="button" class="btn btn-success" href="/index.html">Refresh Token</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
+
+
