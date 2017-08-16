@@ -1,7 +1,7 @@
 # SpotifyNUI
 
 
-INTRODUCTION
+### INTRODUCTION
 
 This project implements a hand recognition and hand gesture recognition system using OpenCV on Python 2.7 to send HTTP requests through a Spotify client to control basic Spotify functions such as play, pause, skip, back, and control volume.
 
@@ -13,18 +13,18 @@ This project implements a hand recognition and hand gesture recognition system u
 
 
 
-Platform: Python 2.7
+**Platform:** Python 2.7
 
-Libraries: OpenCV 2.4.8, Numpy, Requests
+**Libraries:** OpenCV 2.4.8, Numpy, Requests
 
-Frameworks: Flask, Bootstrap
+**Frameworks:** Flask, Bootstrap
 
-APIs: Spotify
+**APIs:** Spotify
 
-Hardware Requirements: Camera/Webcam
+**Hardware Requirements:** Camera/Webcam
 
 
-USAGE
+### USAGE
 
 Run SpotifyAPIClient.py. Got to a browser and go to 127.0.0.1:8080.
 
@@ -45,21 +45,21 @@ The sample gestures and subsequent Spotify requests implemented are described be
 
 They are:
 
-Play Current Playback:
+1. Play Current Playback:
 "V" with your index and middle finger. 
 
-Pause Current Playback:
+2. Pause Current Playback:
 A flipped "L" with thumb and index finger
 
 Coming soon:
 
-Play Previous Track:
+1. Play Previous Track:
 Fist with thumb pointing to the left of the webcam/camera view.
 
-Skip Current Track:
+2. Skip Current Track:
 Fist with thumb pointing to the right of the webcam/camera view.
 
-Set Volume:
+3. Set Volume:
 Raise or lower pointed index finger.
 
 
@@ -67,5 +67,5 @@ Note: Press 'q' at any time to stop the program or 'r' to restart the program.
 
 For any queries, contact: davon.prewitt@gatech.edu
 
-Authors
+### Authors
  Davon Prewitt - Initial work
