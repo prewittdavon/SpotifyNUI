@@ -35,6 +35,7 @@ radius_thresh=0.04 # factor of width of full frame
 first_iteration=True
 finger_ct_history=[0,0]
 
+
 # ------------------------ Function declarations ------------------------ #
 
 # 1. Hand capture histogram
@@ -87,6 +88,8 @@ def mark_fingers(frame_in,hull,pt,radius):
 
     cx = pt[0]
     cy = pt[1]
+
+    print cx, cy
     
     for i in range(len(hull)):
         dist = np.sqrt((hull[-i][0][0] - hull[-i+1][0][0])**2 + (hull[-i][0][1] - hull[-i+1][0][1])**2)
@@ -167,21 +170,21 @@ def find_gesture(frame_in,finger,palm):
     gesture_found=DecideGesture(frame_gesture,GestureDictionary)
     gesture_text="GESTURE:"+str(gesture_found)
     if str(gesture_found) == "V":
-        print "PEACE"
+        print("PEACE")
         Play()
     elif str(gesture_found) == "L_right":
-        print "LOSER"
+        print("LOSER")
     elif str(gesture_found) == "Index_Pointing":
-        print "NOOOO"
+        print("NOOOO")
         # TODO: IMPLEMENT VOLUME CONTROL
     elif str(gesture_found) == "Thumbs_Up":
-        print "GOOD JOB"
+        print("GOOD JOB")
         # TODO: IMPLEMENT LIKE
     elif str(gesture_found) == "Skip":
-        print "Skip"
+        print("Skip")
         Skip()
     elif str(gesture_found) == "Back":
-        print "Back"
+        print("Back")
         Back()
     cv2.putText(frame_in,gesture_text,(int(0.56*frame_in.shape[1]),int(0.97*frame_in.shape[0])),cv2.FONT_HERSHEY_DUPLEX,1,(0,0,0),1,8)
     return frame_in,gesture_found
@@ -203,6 +206,31 @@ capture_done=0
 bg_captured=0
 GestureDictionary=DefineGestures()
 frame_gesture=Gesture("frame_gesture")
+
+moveList = []
+moveDict = {"LEFT": 0, "RIGHT": 0}
+
+def canBackSkip(pointX):
+    moveList.append(pointX)
+    if len(moveList) > 1:
+        i = len(moveList) - 1
+        diff = moveList[i] - moveList[i - 1]
+        if diff < 0 and math.fabs(diff) > 35:
+            moveDict["LEFT"] = moveDict["LEFT"] + 1
+            if moveDict["LEFT"] >= 4:
+                Back()
+                moveDict["LEFT"] = 0
+                moveList = []
+                print "BACK BITCH"
+
+        elif diff > 0 and math.fabs(diff) > 35:
+            moveDict["RIGHT"] = moveDict["RIGHT"] + 1
+            if moveDict["RIGHT"] >= 4:
+                Skip()
+                print "SKIP BITCH"
+                moveList = []
+                moveDict["RIGHT"] = 0
+
 
 while(1):
     # Capture frame from camera
@@ -230,11 +258,12 @@ while(1):
     else:
         frame=hand_threshold(fg_frame,hand_histogram)
         contour_frame=np.copy(frame)
-        contours,hierarchy=cv2.findContours(contour_frame,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+        image, contours,hierarchy=cv2.findContours(contour_frame,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
         found,hand_contour=hand_contour_find(contours)
         if(found):
             hand_convex_hull=cv2.convexHull(hand_contour)
             frame,hand_center,hand_radius,hand_size_score=mark_hand_center(frame_original,hand_contour)
+            canBackSkip(hand_center[0])
             if(hand_size_score):
                 frame,finger,palm=mark_fingers(frame,hand_convex_hull,hand_center,hand_radius)
                 frame,gesture_found=find_gesture(frame,finger,palm)
@@ -255,8 +284,7 @@ while(1):
             hand_histogram=hand_capture(frame_original,box_pos_x,box_pos_y)
     # Capture background by pressing 'b'
     elif interrupt & 0xFF == ord('b'):
-        print 5
-        bg_model = cv2.BackgroundSubtractorMOG2(0,10)
+        bg_model = cv2.createBackgroundSubtractorMOG2(0,10)
         bg_captured=1
     # Reset captured hand by pressing 'r'
     elif interrupt & 0xFF == ord('r'):
